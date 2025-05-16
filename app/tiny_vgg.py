@@ -47,33 +47,13 @@ class TinyVGG_V1(Module):
             Dropout(0.3)
         )
         #size = (56, 56)
-        self.conv_block_3 = Sequential(
-            Conv2d(in_channels=64,
-                   out_channels=128,
-                   kernel_size=3,
-                   padding=1,
-                   stride=1),
-            BatchNorm2d(128),
-            ReLU(),
-            Conv2d(in_channels=128,
-                   out_channels=128,
-                   kernel_size=3,
-                   padding=1,
-                   stride=1),
-            BatchNorm2d(128),
-            ReLU(),
-            MaxPool2d(kernel_size=2,
-                      stride=2),
-            Dropout(0.3)
-        )
-        #size = (28, 28)
         self.classifier = Sequential(
             Flatten(),
-            Linear(in_features=128*28*28,
-                   out_features=256),
+            Linear(in_features=64*56*56,
+                   out_features=128),
             ReLU(),
             Dropout(0.5),
-            Linear(in_features=256,
+            Linear(in_features=128,
                    out_features=output_classes),
         )
         self.apply(self.init_weights)
@@ -81,7 +61,6 @@ class TinyVGG_V1(Module):
     def forward(self, x):
         x = self.conv_block_1(x)
         x = self.conv_block_2(x)
-        x = self.conv_block_3(x)
         x = self.classifier(x)
         return x
         
