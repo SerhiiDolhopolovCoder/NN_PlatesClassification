@@ -10,10 +10,15 @@ class AugmentationV1:
     def get_train(self):
         augment = v2.Compose([
             v2.Resize(self.size),
-            v2.TrivialAugmentWide(num_magnitude_bins=31),
+            #v2.TrivialAugmentWide(num_magnitude_bins=31),
             # v2.RandomHorizontalFlip(p=0.5),
             # v2.RandomRotation(degrees=15),
             # v2.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1), # яркість
+            
+            v2.RandomHorizontalFlip(p=0.5),
+            v2.RandomRotation(degrees=15),
+            v2.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.8, 1.2)),  # Add translation/scaling
+            v2.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),  # Color augmentation
             v2.ToImage(), 
             v2.ToDtype(torch.float32, scale=True), 
             v2.Normalize(mean=self.mean_normalize,
