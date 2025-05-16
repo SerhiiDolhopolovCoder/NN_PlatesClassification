@@ -58,7 +58,7 @@ def train_step(train_dataloader,
     train_total_loss = 0
     train_total_accuracy = 0
     model.train()
-    for X, y in train_dataloader:
+    for batch, (X, y) in enumerate(train_dataloader):
         X, y = X.to(device), y.to(device)
         y_pred = model(X)
         loss = loss_fn(y_pred, y)
@@ -68,7 +68,8 @@ def train_step(train_dataloader,
         optimizer.step()
         if scheduler:
             scheduler.step()
-        print(f"Train loss: {loss.item():.4f} | ",
+        print(f"Batch: {batch+1}/{len(train_dataloader)} | ",
+              f"Train loss: {loss.item():.4f} | ",
               f"Train accuracy: {accuracy:.2f}")
 
         train_total_loss += loss.item()

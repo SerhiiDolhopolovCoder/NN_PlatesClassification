@@ -9,11 +9,18 @@ class TinyVGG_V1(Module):
         #size = (224, 224)
         self.conv_block_1 = Sequential(
             Conv2d(in_channels=input_channels,
-                   out_channels=64,
+                   out_channels=32,
                     kernel_size=3,
                     padding=1,
                     stride=1),
-            BatchNorm2d(64),
+            BatchNorm2d(32),
+            ReLU(),
+            Conv2d(in_channels=32,
+                   out_channels=32,
+                    kernel_size=3,
+                    padding=1,
+                    stride=1),
+            BatchNorm2d(32),
             ReLU(),
             MaxPool2d(kernel_size=2,
                       stride=2),
@@ -21,6 +28,26 @@ class TinyVGG_V1(Module):
         )
         #size = (112, 112)
         self.conv_block_2 = Sequential(
+            Conv2d(in_channels=32,
+                   out_channels=64,
+                   kernel_size=3,
+                   padding=1,
+                   stride=1),
+            BatchNorm2d(64),
+            ReLU(),
+            Conv2d(in_channels=64,
+                   out_channels=64,
+                   kernel_size=3,
+                   padding=1,
+                   stride=1),
+            BatchNorm2d(64),
+            ReLU(),
+            MaxPool2d(kernel_size=2,
+                      stride=2),
+            Dropout(0.3)
+        )
+        #size = (56, 56)
+        self.conv_block_3 = Sequential(
             Conv2d(in_channels=64,
                    out_channels=128,
                    kernel_size=3,
@@ -39,38 +66,18 @@ class TinyVGG_V1(Module):
                       stride=2),
             Dropout(0.3)
         )
-        #size = (56, 56)
-        self.conv_block_3 = Sequential(
-            Conv2d(in_channels=128,
-                   out_channels=256,
-                   kernel_size=3,
-                   padding=1,
-                   stride=1),
-            BatchNorm2d(256),
-            ReLU(),
-            Conv2d(in_channels=256,
-                   out_channels=256,
-                   kernel_size=3,
-                   padding=1,
-                   stride=1),
-            BatchNorm2d(256),
-            ReLU(),
-            MaxPool2d(kernel_size=2,
-                      stride=2),
-            Dropout(0.3)
-        )
         #size = (28, 28)
         self.classifier = Sequential(
             Flatten(),
-            Linear(in_features=256*28*28,
-                   out_features=512),
+            Linear(in_features=128*28*28,
+                   out_features=256),
             ReLU(),
             Dropout(0.5),
-            Linear(in_features=512,
-                   out_features=64),
+            Linear(in_features=256,
+                   out_features=32),
             ReLU(),
             Dropout(0.5),
-            Linear(in_features=64,
+            Linear(in_features=32,
                    out_features=output_classes),
         )
         self.apply(self.init_weights)
