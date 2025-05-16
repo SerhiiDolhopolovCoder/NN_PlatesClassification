@@ -22,7 +22,8 @@ class VGG16_V1(Module):
             BatchNorm2d(64),
             ReLU(),
             MaxPool2d(kernel_size=2,
-                      stride=2),      
+                      stride=2),
+            Dropout(0.2)      
         )
         #size = (112, 112)
         self.conv_block_2 = Sequential(
@@ -41,7 +42,8 @@ class VGG16_V1(Module):
             BatchNorm2d(128),
             ReLU(),
             MaxPool2d(kernel_size=2,
-                      stride=2),      
+                      stride=2),     
+            Dropout(0.2) 
         )
          #size = (56, 56)
         self.conv_block_3 = Sequential(
@@ -67,7 +69,8 @@ class VGG16_V1(Module):
             BatchNorm2d(256),
             ReLU(),
             MaxPool2d(kernel_size=2,
-                      stride=2),      
+                      stride=2),   
+            Dropout(0.2)    
         )
         #size = (28, 28)
         self.conv_block_4 = Sequential(
@@ -93,7 +96,8 @@ class VGG16_V1(Module):
             BatchNorm2d(512),
             ReLU(),
             MaxPool2d(kernel_size=2,
-                      stride=2),      
+                      stride=2),   
+            Dropout(0.2)    
         )
         #size = (14, 14)
         self.conv_block_5 = Sequential(
@@ -119,7 +123,8 @@ class VGG16_V1(Module):
             BatchNorm2d(512),
             ReLU(),
             MaxPool2d(kernel_size=2,
-                      stride=2),   
+                      stride=2), 
+            Dropout(0.2)  
         )
         #size = (7, 7)
         self.classifier = Sequential(
