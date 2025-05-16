@@ -74,10 +74,6 @@ class TinyVGG_V1(Module):
             ReLU(),
             Dropout(0.5),
             Linear(in_features=256,
-                   out_features=32),
-            ReLU(),
-            Dropout(0.5),
-            Linear(in_features=32,
                    out_features=output_classes),
         )
         self.apply(self.init_weights)
