@@ -11,7 +11,7 @@ class AugmentationV1:
         compose_list = [
             v2.Resize(self.size),
             #v2.TrivialAugmentWide(num_magnitude_bins=31),
-            v2.HorizontalFlip(),
+            v2.RandomHorizontalFlip(),
             v2.ToImage(),
             v2.ToDtype(torch.float32, scale=True),
             v2.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
