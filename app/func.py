@@ -62,18 +62,18 @@ def train_step(train_dataloader,
         X, y = X.to(device), y.to(device)
         y_pred = model(X)
         loss = loss_fn(y_pred, y)
-        accuracy = accuracy_fn(y_pred.argmax(dim=1), y).item()
+        train_total_loss += loss.item()
+        accuracy = accuracy_fn.to(device)(y, y_pred.argmax(dim=1))
+        train_total_accuracy += accuracy
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
         if scheduler:
             scheduler.step()
-        print(f"Batch: {batch+1}/{len(train_dataloader)} | ",
-              f"Train loss: {loss.item():.4f} | ",
-              f"Train accuracy: {accuracy:.2f}")
-
-        train_total_loss += loss.item()
-        train_total_accuracy += accuracy
+        # print(f"Batch: {batch+1}/{len(train_dataloader)} | ",
+        #       f"Train loss: {loss.item():.4f} | ",
+        #       f"Train accuracy: {accuracy:.2f}")
+        
     train_total_loss /= len(train_dataloader)
     train_total_accuracy /= len(train_dataloader)
     return train_total_loss, train_total_accuracy
@@ -94,8 +94,8 @@ def valid_step(valid_dataloader,
             X, y = X.to(device), y.to(device)
             y_pred = model(X)
             loss = loss_fn(y_pred, y)
-            accuracy = accuracy_fn(y_pred.argmax(dim=1), y).item()
             valid_total_loss += loss.item()
+            accuracy = accuracy_fn.to(device)(y, y_pred.argmax(dim=1))
             valid_total_accuracy += accuracy
         valid_total_loss /= len(valid_dataloader)
         valid_total_accuracy /= len(valid_dataloader)

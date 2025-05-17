@@ -12,5 +12,5 @@ VALID_DATA_PATH = "../data/valid"
 device = "cuda" if torch.cuda.is_available() else "cpu"
 def set_seed(seed: int):
     torch.manual_seed(seed)
-    if device == "cuda":
+    if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
