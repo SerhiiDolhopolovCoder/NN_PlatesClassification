@@ -24,8 +24,7 @@ def train(train_dataloader,
                                                 model, 
                                                 loss_fn, 
                                                 accuracy_fn, 
-                                                optimizer, 
-                                                scheduler)
+                                                optimizer)
         total_train_loss.append(train_loss)
         total_train_accuracy.append(train_accuracy)
         
@@ -40,7 +39,9 @@ def train(train_dataloader,
               f"Train accuracy: {train_accuracy:.2f} | ",
               f"Valid loss: {valid_loss:.4f} | ",
               f"Valid accuracy: {valid_accuracy:.2f}")
-        
+        if scheduler:
+            scheduler.step(valid_loss)
+
     end_timer = timer()
     print(f"Training time: {end_timer - start_timer:.2f} seconds")
     
@@ -49,7 +50,6 @@ def train_step(train_dataloader,
                loss_fn, 
                accuracy_fn, 
                optimizer, 
-               scheduler = None,
                ) -> tuple[float, float]:
     """
     Returns:
@@ -68,8 +68,6 @@ def train_step(train_dataloader,
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        if scheduler:
-            scheduler.step()
         # print(f"Batch: {batch+1}/{len(train_dataloader)} | ",
         #       f"Train loss: {loss.item():.4f} | ",
         #       f"Train accuracy: {accuracy:.2f}")
