@@ -6,7 +6,7 @@ from torch.nn import init
 class TinyVGG_V1(Module):
     def __init__(self, input_channels: int, output_classes: int):
         super().__init__()
-        #size = (224, 224)
+        #size = (64, 64)
         self.conv_block_1 = Sequential(
             Conv2d(in_channels=input_channels,
                    out_channels=16,
@@ -26,7 +26,7 @@ class TinyVGG_V1(Module):
                       stride=2),
             Dropout(0.3)
         )
-        #size = (112, 112)
+        #size = (32, 32)
         self.conv_block_2 = Sequential(
             Conv2d(in_channels=16,
                    out_channels=32,
@@ -46,10 +46,10 @@ class TinyVGG_V1(Module):
                       stride=2),
             Dropout(0.3)
         )
-        #size = (56, 56)
+        #size = (16, 16)
         self.classifier = Sequential(
             Flatten(),
-            Linear(in_features=32*56*56,
+            Linear(in_features=32*16*16,
                    out_features=64),
             ReLU(),
             Dropout(0.5),

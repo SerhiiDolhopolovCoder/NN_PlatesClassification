@@ -3,7 +3,7 @@ from torchvision.transforms import v2
 
 
 class AugmentationV1:
-    size = (224, 224)
+    size = (64, 64)
     mean_normalize = [0.485, 0.456, 0.406]
     std_normalize = [0.229, 0.224, 0.225]
         
